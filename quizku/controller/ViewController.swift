@@ -24,17 +24,22 @@ class ViewController: UIViewController {
     }
 
     @IBAction func onButtonClicked(_ sender: UIButton) {
-        quizBrain.evaluateAnswer(answer: sender.titleLabel?.text ?? "")
+        if quizBrain.evaluateAnswer(answer: sender.titleLabel?.text ?? "") {
+            sender.tintColor = .green
+        } else {
+            sender.tintColor = .red
+        }
         quizBrain.nextQuestion()
-        updateUI()
+        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
     }
     
+    @objc
     private func updateUI() {
-        if let question = quizBrain.getQuestion() {
-            questionLabel.text = question
-            rightAnswerLabel.text = quizBrain.getRightAnswer()
-            questionProgress.progress = quizBrain.getProgress()
-        }
+        questionLabel.text = quizBrain.getQuestion()
+        rightAnswerLabel.text = quizBrain.getRightAnswer()
+        questionProgress.progress = quizBrain.getProgress()
+        trueButton.tintColor = .link
+        falseButton.tintColor = .link
     }
     
     private func resetUI() {

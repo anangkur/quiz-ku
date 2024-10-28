@@ -23,23 +23,23 @@ struct QuizBrain {
     private var questionIndex = 0
     private var rightAnswerCount = 0
     
-    private func getAnswer() -> String? {
-        if (questionIndex < questions.count) {
-            return questions[questionIndex].answer
-        } else {
-            return nil
-        }
+    private func getAnswer() -> String {
+        return questions[questionIndex].answer
     }
     
-    mutating func evaluateAnswer(answer: String) {
-        if (answer == getAnswer()) {
+    mutating func evaluateAnswer(answer: String) -> Bool {
+        let isAnswerCorrect = answer == getAnswer()
+        if (isAnswerCorrect) {
             rightAnswerCount += 1
         }
+        return isAnswerCorrect
     }
     
     mutating func nextQuestion() {
-        if (questionIndex < questions.count) {
+        if (questionIndex + 1 < questions.count) {
             questionIndex += 1
+        } else {
+            reset()
         }
     }
     
@@ -53,11 +53,7 @@ struct QuizBrain {
     }
     
     func getQuestion() -> String? {
-        if (questionIndex < questions.count) {
-            return questions[questionIndex].text
-        } else {
-            return nil
-        }
+        return questions[questionIndex].text
     }
     
     func getRightAnswer() -> String {
